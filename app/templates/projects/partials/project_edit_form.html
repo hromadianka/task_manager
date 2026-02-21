@@ -1,6 +1,6 @@
 <form
     hx-post="{% url 'projects:update' object.id %}"
-    hx-target="#project-title"
+    hx-target="this"
     hx-swap="outerHTML"
     class="d-flex gap-2"
 >
@@ -15,7 +15,7 @@
         autofocus
     >
 
-    <button type="submit" class="icon-btn text-white">
-        <i class="bi bi-check-lg"></i>
+    <button type="submit" class="icon-btn">
+        Save
     </button>
 </form>

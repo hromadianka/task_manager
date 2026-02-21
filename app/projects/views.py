@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.template.loader import render_to_string
 from django.http import HttpResponse
@@ -48,3 +48,38 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy("projects:list")
+
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
+    model = Project
+    fields = ["title"]
+    template_name = "projects/partials/project_edit_form.html"
+
+    # User validation
+    def get_queryset(self):
+        return Project.objects.filter(user=self.request.user)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        html = render_to_string(
+            "projects/partials/project_title.html",
+            {"project": self.object},
+            request=self.request
+        )
+        return HttpResponse(html)
+
+    def form_invalid(self, form):
+        html = render_to_string(
+            "projects/partials/project_edit_form.html",
+            {"form": form, "object": self.get_object()},
+            request=self.request
+        )
+        return HttpResponse(html, status=400)
+
+
+class ProjectDeleteView(LoginRequiredMixin, DeleteView):
+    model = Project
+    success_url = reverse_lazy("projects:list")
+
+    # User validation
+    def get_queryset(self):
+        return Project.objects.filter(user=self.request.user)
