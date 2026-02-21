@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+    <div class="text-center">
+
+        <h1 class="fw-bold mb-3">
+            Welcome to Task Manager
+        </h1>
+
+        <p class="text-muted mb-4">
+            Manage your projects and tasks efficiently in one place.
+        </p>
+
+        <a href="{% url 'projects:list' %}" class="btn btn-primary btn-lg">
+            Go to Projects
+        </a>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+.icon-btn {
+    background: transparent;
+    border: none;
+    padding: 6px;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    opacity: 0.8;
+}
+
+.icon-btn:focus {
+    outline: none;
+    box-shadow: none;
+}

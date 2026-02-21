@@ -1,0 +1,25 @@
+<form
+    hx-post="{% url 'tasks:create' project.pk %}"
+    hx-target="#tasks-list"
+    hx-swap="afterbegin"
+    class="card card-body mb-3 shadow-sm border-0"
+>
+    {% csrf_token %}
+
+    <div class="d-flex align-items-center gap-2">
+
+        <span class="fs-4 text-primary">＋</span>
+
+        <input
+            type="text"
+            name="title"
+            class="form-control"
+            placeholder="New task..."
+            required
+        >
+
+        <button type="submit" class="btn btn-success">
+            Add
+        </button>
+    </div>
+</form>
