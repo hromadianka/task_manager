@@ -2,9 +2,13 @@
      id="task-{{ task.id }}">
 
     <div class="d-flex align-items-center gap-2">
-        <input type="checkbox"
-               {% if task.is_done %}checked{% endif %}
-               disabled>
+        <input
+            type="checkbox"
+            {% if task.is_done %}checked{% endif %}
+            hx-post="{% url 'tasks:toggle_done' task.id %}"
+            hx-target="#task-{{ task.id }}"
+            hx-swap="outerHTML"
+        >
 
         <span class="{% if task.is_done %}text-decoration-line-through text-muted{% endif %}">
             {{ task.title }}

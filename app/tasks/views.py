@@ -1,6 +1,6 @@
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from projects.models import Project
@@ -32,7 +32,6 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     fields = ["title"]
     template_name = "tasks/partials/task_edit_form.html"
 
-    # ВАЖНО: только задачи текущего пользователя
     def get_queryset(self):
         return Task.objects.filter(project__user=self.request.user)
 
@@ -64,3 +63,15 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
         self.object = self.get_object()
         self.object.delete()
         return HttpResponse("")
+
+class TaskToggleDoneView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk, project__user=request.user)
+        task.is_done = not task.is_done
+        task.save()
+        html = render_to_string(
+            "tasks/partials/task_item.html",
+            {"task": task},
+            request=request
+        )
+        return HttpResponse(html)
