@@ -75,3 +75,27 @@ class TaskToggleDoneView(LoginRequiredMixin, View):
             request=request
         )
         return HttpResponse(html)
+
+class TaskUpdateDeadlineView(LoginRequiredMixin, UpdateView):
+    model = Task
+    fields = ["deadline"]
+
+    # User validation
+    def get_queryset(self):
+        return Task.objects.filter(project__user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return render(
+            request,
+            "tasks/partials/task_deadline_form.html",  # твой шаблон формы
+            {"task": self.object}
+        )
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(
+            self.request,
+            "tasks/partials/task_item.html",
+            {"task": self.object}
+        )

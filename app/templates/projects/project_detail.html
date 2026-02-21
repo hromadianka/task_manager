@@ -46,4 +46,28 @@
     </div>
 
 </div>
+
+<style>
+    .task-item {
+        position: relative;
+    }
+
+    .calendar-btn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .task-actions {
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .task-item:hover .calendar-btn,
+    .task-item:hover .task-actions {
+        display: inline-block;
+        opacity: 1;
+    }
+</style>
 {% endblock %}

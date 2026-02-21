@@ -1,21 +1,31 @@
 <form
-    hx-post="{% url 'projects:update' object.id %}"
-    hx-target="#project-title"
-    hx-swap="outerHTML"
-    class="d-flex gap-2"
+    hx-post="{% url 'projects:create' %}"
+    hx-target="#projects-list"
+    hx-swap="afterbegin"
+    class="card card-body mb-4 border-0 shadow-sm"
+    style="background-color: #0d6efd; color: white;"
 >
     {% csrf_token %}
 
-    <input
-        type="text"
-        name="title"
-        value="{{ object.title }}"
-        class="form-control form-control-sm"
-        required
-        autofocus
-    >
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <span class="fs-4">＋</span>
+        </div>
 
-    <button type="submit" class="icon-btn text-white">
-        <i class="bi bi-check-lg"></i>
-    </button>
+        <div class="col">
+            <input
+                type="text"
+                name="title"
+                class="form-control"
+                placeholder="New project title..."
+                required
+            >
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-light fw-bold">
+                Create
+            </button>
+        </div>
+    </div>
 </form>

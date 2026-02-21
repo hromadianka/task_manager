@@ -1,0 +1,23 @@
+<div class="task-item d-flex align-items-center justify-content-between p-2 border rounded mb-2"
+     id="task-{{ task.id }}">
+
+    <form
+        hx-post="{% url 'tasks:update_deadline' task.id %}"
+        hx-target="closest .task-item"
+        hx-swap="outerHTML"
+        class="d-flex align-items-center gap-2 w-100"
+    >
+        {% csrf_token %}
+
+        <input
+            type="date"
+            name="deadline"
+            value="{{ task.deadline|date:'Y-m-d' }}"
+            class="form-control form-control-sm"
+        >
+
+        <button type="submit" class="btn btn-sm btn-success">
+            <i class="bi bi-check"></i>
+        </button>
+    </form>
+</div>
