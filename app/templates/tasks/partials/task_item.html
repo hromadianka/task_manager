@@ -1,3 +1,37 @@
-<div class="task-item" id="task-{{ task.id }}">
-    <span class="task-title">{{ task.title }}</span>
+<div class="task-item d-flex align-items-center justify-content-between p-2 border rounded mb-2"
+     id="task-{{ task.id }}">
+
+    <div class="d-flex align-items-center gap-2">
+        <input type="checkbox"
+               {% if task.is_done %}checked{% endif %}
+               disabled>
+
+        <span class="{% if task.is_done %}text-decoration-line-through text-muted{% endif %}">
+            {{ task.title }}
+        </span>
+    </div>
+
+    <!-- Actions (hidden until hover) -->
+    <div class="task-actions">
+        <!-- Edit -->
+        <button
+            class="icon-btn"
+            hx-get="{% url 'tasks:update' task.id %}"
+            hx-target="#task-{{ task.id }}"
+            hx-swap="outerHTML"
+        >
+            <i class="bi bi-pencil"></i>
+        </button>
+
+        <!-- Delete -->
+        <button
+            class="icon-btn"
+            hx-delete="{% url 'tasks:delete' task.id %}"
+            hx-target="#task-{{ task.id }}"
+            hx-swap="outerHTML"
+            hx-confirm="Delete this task?"
+        >
+            <i class="bi bi-trash"></i>
+        </button>
+    </div>
 </div>

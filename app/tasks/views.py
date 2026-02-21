@@ -1,4 +1,4 @@
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
@@ -26,3 +26,41 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
             request=self.request
         )
         return HttpResponse(html)
+
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
+    model = Task
+    fields = ["title"]
+    template_name = "tasks/partials/task_edit_form.html"
+
+    # ВАЖНО: только задачи текущего пользователя
+    def get_queryset(self):
+        return Task.objects.filter(project__user=self.request.user)
+
+    def form_valid(self, form):
+        self.object = form.save()
+        html = render_to_string(
+            "tasks/partials/task_item.html",
+            {"task": self.object},
+            request=self.request
+        )
+        return HttpResponse(html)
+
+    def form_invalid(self, form):
+        html = render_to_string(
+            "tasks/partials/task_edit_form.html",
+            {"form": form, "task": self.object},
+            request=self.request
+        )
+        return HttpResponse(html, status=400)
+
+
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
+    model = Task
+
+    def get_queryset(self):
+        return Task.objects.filter(project__user=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return HttpResponse("")

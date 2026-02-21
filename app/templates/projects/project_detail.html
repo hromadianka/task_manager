@@ -18,7 +18,7 @@
                     hx-target="#project-title"
                     hx-swap="outerHTML"
                 >
-                    <i class="bi bi-pencil"></i>
+                    <i class="bi bi-pencil text-white"></i>
                 </button>
 
                 <!-- Delete -->
@@ -30,7 +30,7 @@
                 >
                     {% csrf_token %}
                     <button type="submit" class="icon-btn">
-                        <i class="bi bi-trash"></i>
+                        <i class="bi bi-trash text-white"></i>
                     </button>
                 </form>
     </div>
@@ -42,8 +42,6 @@
     <div id="tasks-list">
         {% for task in project.tasks.all %}
             {% include "tasks/partials/task_item.html" %}
-        {% empty %}
-            <p class="text-muted">No tasks yet</p>
         {% endfor %}
     </div>
 
