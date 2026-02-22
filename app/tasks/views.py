@@ -6,7 +6,6 @@ from django.template.loader import render_to_string
 from django.db.models import Max
 from projects.models import Project
 from .models import Task
-from django.views.decorators.http import require_POST
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):

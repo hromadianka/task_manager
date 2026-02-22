@@ -1,0 +1,4 @@
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W", "C", "B"]
+exclude = ["migrations", ".venv", "node_modules", "static", "media"]

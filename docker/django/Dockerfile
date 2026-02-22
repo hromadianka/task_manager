@@ -22,4 +22,7 @@ COPY app /app
 RUN useradd -m django
 USER django
 
+# Add ruff
+RUN pip install --no-cache-dir ruff
+
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
