@@ -3,8 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.db.models import Max
 from projects.models import Project
 from .models import Task
+from django.views.decorators.http import require_POST
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
@@ -17,7 +19,15 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
             pk=self.kwargs["pk"],
             user=self.request.user
         )
+
         form.instance.project = project
+
+        max_priority = project.tasks.aggregate(
+            Max("priority")
+        )["priority__max"]
+
+        form.instance.priority = (max_priority or 0) + 1
+
         self.object = form.save()
 
         html = render_to_string(
@@ -99,3 +109,24 @@ class TaskUpdateDeadlineView(LoginRequiredMixin, UpdateView):
             "tasks/partials/task_item.html",
             {"task": self.object}
         )
+
+# Priority
+
+def move_up(request, pk):
+    task = get_object_or_404(Task, pk=pk, project__user=request.user)
+    above = task.project.tasks.filter(order__lt=task.order).order_by('-order').first()
+    if above:
+        task.order, above.order = above.order, task.order
+        task.save()
+        above.save()
+    return render(request, "tasks/partials/task_list.html", {"project": task.project})
+
+
+def move_down(request, pk):
+    task = get_object_or_404(Task, pk=pk, project__user=request.user)
+    below = task.project.tasks.filter(order__gt=task.order).order_by('order').first()
+    if below:
+        task.order, below.order = below.order, task.order
+        task.save()
+        below.save()
+    return render(request, "tasks/partials/task_list.html", {"project": task.project})

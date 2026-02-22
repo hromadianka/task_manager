@@ -24,6 +24,28 @@
 
     <!-- Actions (hidden until hover) -->
     <div class="task-actions">
+        <!-- Priority up -->
+        <button
+            class="icon-btn"
+            hx-post="{% url 'tasks:move_up' task.id %}"
+            hx-target="#tasks-list"
+            hx-swap="outerHTML"
+            title="Move up"
+        >
+            <i class="bi bi-arrow-up"></i>
+        </button>
+
+        <!-- Priority down -->
+        <button
+            class="icon-btn"
+            hx-post="{% url 'tasks:move_down' task.id %}"
+            hx-target="#tasks-list"
+            hx-swap="outerHTML"
+            title="Move down"
+        >
+            <i class="bi bi-arrow-down"></i>
+        </button>
+
         <!-- Choose deadline -->
         <button
                 class="icon-btn calendar-btn ms-2"

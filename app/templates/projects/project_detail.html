@@ -39,11 +39,7 @@
 
     {% include "tasks/partials/task_form.html" %}
 
-    <div id="tasks-list">
-        {% for task in project.tasks.all %}
-            {% include "tasks/partials/task_item.html" %}
-        {% endfor %}
-    </div>
+    {% include "tasks/partials/task_list.html" %}
 
 </div>
 
